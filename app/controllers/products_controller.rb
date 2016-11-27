@@ -3,7 +3,10 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.all
+    @products = Product.find_each do |product|
+      JSON.parse(product.prod_attributes).to_json
+      
+    end
 
     render json: @products
   end
