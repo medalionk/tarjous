@@ -3,10 +3,7 @@ class ProductsController < ApplicationController
 
   # GET /products
   def index
-    @products = Product.find_each do |product|
-      JSON.parse(product.prod_attributes).to_json
-      
-    end
+    @products = Product.all
 
     render json: @products
   end
@@ -45,11 +42,11 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find(params[:id])
+      @product = Product.where('label_name like ?',"%#{params[:search]}%")
     end
 
     # Only allow a trusted parameter "white list" through.
     def product_params
-      params.require(:product).permit(:product_key, :lat, :long)
+      params.require(:product).permit(:product_key, :lat, :long,:search)
     end
 end
